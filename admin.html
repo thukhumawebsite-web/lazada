@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazada Affiliate - Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', 'Kanit', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen">
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full border-t-4 border-[#f51167]">
+      <h2 class="text-xl font-bold text-center text-gray-800 mb-4">Lazada Admin Login</h2>
+      <input type="password" id="adminPassInput" placeholder="Enter Admin Password" class="w-full border p-2.5 rounded-lg mb-3 text-sm focus:ring-2 focus:ring-[#f51167] focus:outline-none">
+      <button onclick="login()" id="loginBtn" class="w-full bg-[#0f146d] hover:bg-[#1a219a] text-white font-semibold py-2 rounded-lg text-sm transition">Sign In</button>
+      <p id="loginError" class="text-red-500 text-xs mt-2 text-center hidden">Invalid Password</p>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="hidden">
+    <header class="bg-white border-b py-4 px-6 sticky top-0 z-10 shadow-sm flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <a href="/" class="text-xs font-semibold text-gray-500 hover:text-[#f51167] flex items-center gap-1 border px-2.5 py-1.5 rounded-lg">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> View Site
+        </a>
+        <h1 class="text-lg font-bold text-[#0f146d]">Lazada Affiliate Dashboard</h1>
+      </div>
+      <button onclick="saveAllToGitHub()" id="saveBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2 shadow-sm transition">
+        <i data-lucide="save" class="w-4 h-4"></i> Save to GitHub
+      </button>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Product Form -->
+      <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm h-fit sticky top-20">
+        <div class="flex items-center justify-between mb-4">
+          <h2 id="formHeading" class="font-bold text-gray-800 flex items-center gap-2">
+            <i data-lucide="plus-circle" id="formIcon" class="w-5 h-5 text-[#f51167]"></i> 
+            <span id="formTitleText">Add Product</span>
+          </h2>
+          <button id="cancelEditBtn" onclick="cancelEdit()" class="hidden text-xs text-red-500 hover:underline font-semibold">Cancel Edit</button>
+        </div>
+
+        <form id="productForm" onsubmit="handleFormSubmit(event)" class="space-y-3 text-sm">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Category</label>
+            <select id="pCategory" class="w-full border p-2 rounded focus:ring-1 focus:ring-[#f51167] text-sm">
+              <option value="Electronics">Electronics (เครื่องใช้ไฟฟ้าและไอที)</option>
+              <option value="Home & Kitchen">Home & Kitchen (ของใช้ในบ้านและครัว)</option>
+              <option value="Fashion">Fashion (แฟชั่น)</option>
+              <option value="Beauty">Beauty (ความงามและสุขภาพ)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Product Title (EN)</label>
+            <input type="text" id="pNameEn" required placeholder="e.g. Wireless Headphones" class="w-full border p-2 rounded focus:ring-1 focus:ring-[#f51167]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Product Title (TH)</label>
+            <input type="text" id="pNameTh" required placeholder="e.g. หูฟังบลูทูธไร้สาย" class="w-full border p-2 rounded focus:ring-1 focus:ring-[#f51167]">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 mb-1">Sale Price</label>
+              <input type="text" id="pPrice" required placeholder="฿690" class="w-full border p-2 rounded focus:ring-1 focus:ring-[#f51167]">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 mb-1">Original Price</label>
+              <input type="text" id="pOriginalPrice" placeholder="฿1,290" class="w-full border p-2 rounded focus:ring-1 focus:ring-[#f51167]">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Image URL</label>
+            <input type="url" id="pImage" required placeholder="https://..." class="w-full border p-2 rounded focus:ring-1 focus:ring-[#f51167]">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Lazada Affiliate Link</label>
+            <input type="url" id="pUrl" required placeholder="https://c.lazada.co.th/t/..." class="w-full border p-2 rounded focus:ring-1 focus:ring-[#f51167]">
+          </div>
+          
+          <button type="submit" id="submitFormBtn" class="w-full bg-[#f51167] hover:bg-[#d80b57] text-white font-semibold py-2 rounded-lg mt-2 shadow-sm transition">
+            Add to List
+          </button>
+        </form>
+      </div>
+
+      <!-- Product List -->
+      <div class="md:col-span-2 space-y-3">
+        <h2 class="font-bold text-gray-800 mb-2">Product List (<span id="count">0</span>)</h2>
+        <div id="productList" class="space-y-2.5">
+          <!-- Items will be injected here -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let adminPassword = '';
+    let products = [];
+    let editingIndex = -1;
+
+    const categoryMapTh = {
+      'Electronics': 'เครื่องใช้ไฟฟ้าและไอที',
+      'Home & Kitchen': 'ของใช้ในบ้านและครัว',
+      'Fashion': 'แฟชั่น',
+      'Beauty': 'ความงามและสุขภาพ'
+    };
+
+    async function login() {
+      const pwd = document.getElementById('adminPassInput').value;
+      const btn = document.getElementById('loginBtn');
+      const err = document.getElementById('loginError');
+
+      btn.disabled = true;
+      btn.innerText = 'Verifying...';
+
+      try {
+        const res = await fetch('/api/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pwd })
+        });
+        const resData = await res.json();
+
+        if (res.ok && resData.success) {
+          adminPassword = pwd;
+          document.getElementById('loginModal').classList.add('hidden');
+          document.getElementById('adminPanel').classList.remove('hidden');
+          loadCurrentProducts();
+        } else {
+          err.classList.remove('hidden');
+        }
+      } catch (e) {
+        alert('Verification error: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Sign In';
+      }
+    }
+
+    async function loadCurrentProducts() {
+      try {
+        const res = await fetch('data.json?t=' + Date.now());
+        products = await res.json();
+        renderAdminList();
+      } catch (e) {
+        console.error('Failed to load data.json', e);
+      }
+    }
+
+    function renderAdminList() {
+      const list = document.getElementById('productList');
+      document.getElementById('count').innerText = products.length;
+      list.innerHTML = '';
+
+      products.forEach((p, index) => {
+        const isCurrentlyEditing = editingIndex === index;
+        const item = `
+          <div class="bg-white p-3.5 rounded-xl border ${isCurrentlyEditing ? 'border-[#f51167] ring-2 ring-pink-100' : 'border-gray-200'} flex items-center justify-between gap-3 transition">
+            <img src="${p.image}" class="w-14 h-14 rounded-lg object-cover border bg-gray-50 shrink-0" onerror="this.src='https://placehold.co/100x100?text=No+Image'">
+            <div class="flex-grow min-w-0">
+              <div class="flex items-center gap-1.5 mb-1">
+                <span class="text-[10px] font-bold text-[#f51167] bg-pink-50 px-2 py-0.5 rounded">${p.category}</span>
+                <span class="text-[10px] text-gray-400 font-medium">${p.categoryTh || ''}</span>
+              </div>
+              <h4 class="font-medium text-sm text-gray-800 truncate">${p.nameEn}</h4>
+              <p class="text-xs font-semibold text-[#f51167] mt-0.5">
+                ${p.price} 
+                ${p.originalPrice ? `<span class="line-through text-gray-400 font-normal ml-1">${p.originalPrice}</span>` : ''}
+              </p>
+            </div>
+            <div class="flex items-center gap-1 shrink-0">
+              <button onclick="startEdit(${index})" class="p-2 rounded-lg text-gray-500 hover:text-[#0f146d] hover:bg-blue-50 transition" title="Edit">
+                <i data-lucide="edit-3" class="w-4 h-4"></i>
+              </button>
+              <button onclick="removeProduct(${index})" class="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition" title="Delete">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        list.innerHTML += item;
+      });
+      lucide.createIcons();
+    }
+
+    function startEdit(index) {
+      editingIndex = index;
+      const p = products[index];
+
+      document.getElementById('pCategory').value = p.category;
+      document.getElementById('pNameEn').value = p.nameEn || '';
+      document.getElementById('pNameTh').value = p.nameTh || '';
+      document.getElementById('pPrice').value = p.price || '';
+      document.getElementById('pOriginalPrice').value = p.originalPrice || '';
+      document.getElementById('pImage').value = p.image || '';
+      document.getElementById('pUrl').value = p.affiliateUrl || '';
+
+      document.getElementById('formTitleText').innerText = 'Edit Product';
+      document.getElementById('submitFormBtn').innerText = 'Update Product';
+      document.getElementById('submitFormBtn').className = 'w-full bg-[#0f146d] hover:bg-[#1a219a] text-white font-semibold py-2 rounded-lg mt-2 shadow-sm transition';
+      document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+      renderAdminList();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelEdit() {
+      editingIndex = -1;
+      document.getElementById('productForm').reset();
+      document.getElementById('formTitleText').innerText = 'Add Product';
+      document.getElementById('submitFormBtn').innerText = 'Add to List';
+      document.getElementById('submitFormBtn').className = 'w-full bg-[#f51167] hover:bg-[#d80b57] text-white font-semibold py-2 rounded-lg mt-2 shadow-sm transition';
+      document.getElementById('cancelEditBtn').classList.add('hidden');
+      renderAdminList();
+    }
+
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const cat = document.getElementById('pCategory').value;
+
+      const productData = {
+        id: editingIndex >= 0 ? products[editingIndex].id : Date.now(),
+        category: cat,
+        categoryTh: categoryMapTh[cat] || cat,
+        nameEn: document.getElementById('pNameEn').value,
+        nameTh: document.getElementById('pNameTh').value,
+        price: document.getElementById('pPrice').value,
+        originalPrice: document.getElementById('pOriginalPrice').value,
+        image: document.getElementById('pImage').value,
+        affiliateUrl: document.getElementById('pUrl').value
+      };
+
+      if (editingIndex >= 0) {
+        products[editingIndex] = productData;
+      } else {
+        products.unshift(productData);
+      }
+
+      cancelEdit();
+    }
+
+    function removeProduct(index) {
+      if (confirm('Are you sure you want to delete this product?')) {
+        if (editingIndex === index) {
+          cancelEdit();
+        }
+        products.splice(index, 1);
+        renderAdminList();
+      }
+    }
+
+    async function saveAllToGitHub() {
+      const btn = document.getElementById('saveBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Saving...`;
+
+      try {
+        const res = await fetch('/api/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password: adminPassword,
+            data: products
+          })
+        });
+
+        const resData = await res.json();
+        if (res.ok && resData.success) {
+          alert('Products updated and synced to GitHub successfully!');
+        } else {
+          alert('Error: ' + resData.message);
+        }
+      } catch (e) {
+        alert('Sync error: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> Save to GitHub`;
+        lucide.createIcons();
+      }
+    }
+  </script>
+</body>
+</html>
