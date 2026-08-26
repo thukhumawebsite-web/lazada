@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "category": "Electronics",
+    "categoryTh": "เครื่องใช้ไฟฟ้าและไอที",
+    "nameEn": "Wireless Noise Cancelling Bluetooth Headphones",
+    "nameTh": "หูฟังบลูทูธครอบหูไร้สาย ระบบตัดเสียงรบกวน ANC",
+    "price": "฿690",
+    "originalPrice": "฿1,290",
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=60",
+    "affiliateUrl": "https://c.lazada.co.th/t/your-affiliate-link-1"
+  },
+  {
+    "id": 2,
+    "category": "Electronics",
+    "categoryTh": "เครื่องใช้ไฟฟ้าและไอที",
+    "nameEn": "Smart Android TV Stick 4K Ultra HD Streaming Device",
+    "nameTh": "สตรีมมิ่งสติ๊ก กล่องแอนดรอยด์ทีวี 4K คมชัดระดับ Ultra HD",
+    "price": "฿990",
+    "originalPrice": "฿1,590",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&auto=format&fit=crop&q=60",
+    "affiliateUrl": "https://c.lazada.co.th/t/your-affiliate-link-2"
+  },
+  {
+    "id": 3,
+    "category": "Home & Kitchen",
+    "categoryTh": "ของใช้ในบ้านและครัว",
+    "nameEn": "Digital Air Fryer 4.5L Oil-Free Healthy Cooking",
+    "nameTh": "หม้อทอดไร้น้ำมัน ดิจิตอล ขนาด 4.5 ลิตร เพื่อสุขภาพ",
+    "price": "฿850",
+    "originalPrice": "฿1,490",
+    "image": "https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=500&auto=format&fit=crop&q=60",
+    "affiliateUrl": "https://c.lazada.co.th/t/your-affiliate-link-3"
+  },
+  {
+    "id": 4,
+    "category": "Home & Kitchen",
+    "categoryTh": "ของใช้ในบ้านและครัว",
+    "nameEn": "Robotic Vacuum Cleaner with Mopping & Smart Sensor",
+    "nameTh": "หุ่นยนต์ดูดฝุ่นอัจฉริยะ พร้อมระบบถูพื้นในตัว",
+    "price": "฿1,490",
+    "originalPrice": "฿2,590",
+    "image": "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?w=500&auto=format&fit=crop&q=60",
+    "affiliateUrl": "https://c.lazada.co.th/t/your-affiliate-link-4"
+  },
+  {
+    "id": 5,
+    "category": "Fashion",
+    "categoryTh": "แฟชั่น",
+    "nameEn": "Sporty Breathable Lightweight Running Shoes",
+    "nameTh": "รองเท้าวิ่งเพื่อสุขภาพ ระบายอากาศ น้ำหนักเบา",
+    "price": "฿499",
+    "originalPrice": "฿890",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop&q=60",
+    "affiliateUrl": "https://c.lazada.co.th/t/your-affiliate-link-5"
+  },
+  {
+    "id": 6,
+    "category": "Beauty",
+    "categoryTh": "ความงามและสุขภาพ",
+    "nameEn": "Facial Cleansing Device & Pore Tightening Massager",
+    "nameTh": "เครื่องล้างหน้าซิลิโคนและนวดกระชับรูขุมขน",
+    "price": "฿299",
+    "originalPrice": "฿590",
+    "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=500&auto=format&fit=crop&q=60",
+    "affiliateUrl": "https://c.lazada.co.th/t/your-affiliate-link-6"
+  }
+]
