@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazada Top Deals & Curated Picks</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', 'Kanit', sans-serif; }
+    .lazada-blue { color: #0f146d; }
+    .bg-lazada-blue { background-color: #0f146d; }
+    .lazada-pink { color: #f51167; }
+    .bg-lazada-pink { background-color: #f51167; }
+    .hover-bg-lazada-pink:hover { background-color: #d80b57; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
+      <!-- Logo -->
+      <a href="#" class="text-2xl font-black tracking-tight shrink-0 flex items-center gap-1">
+        <span class="text-[#0f146d]">Lazada</span><span class="text-[#f51167]">Picks</span>
+      </a>
+
+      <!-- Search Box -->
+      <div class="relative flex-grow max-w-xs">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search products..." 
+          class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#f51167] focus:border-transparent transition"
+          oninput="filterProducts()"
+        >
+        <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+      </div>
+
+      <!-- Language Toggle & Admin Link -->
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center bg-gray-100 p-1 rounded-lg border border-gray-200 text-xs font-semibold">
+          <button id="lang-en-btn" onclick="switchLanguage('en')" class="px-2.5 py-1 rounded bg-white text-[#f51167] shadow-sm transition">EN</button>
+          <button id="lang-th-btn" onclick="switchLanguage('th')" class="px-2.5 py-1 rounded text-gray-600 hover:text-[#f51167] transition">TH</button>
+        </div>
+        <a href="/admin.html" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg border border-gray-200 bg-white" title="Admin Panel">
+          <i data-lucide="settings" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-[#0f146d] via-[#2a1b7a] to-[#f51167] text-white py-12 px-4 text-center">
+    <h1 id="heroTitle" class="text-2xl sm:text-4xl font-extrabold mb-2">Curated Lazada Mega Deals & Discounts</h1>
+    <p id="heroSubtitle" class="text-pink-100 max-w-xl mx-auto text-sm sm:text-base">
+      Explore top trending products, guaranteed vouchers, and direct Lazada links.
+    </p>
+  </section>
+
+  <!-- Category Filter Buttons -->
+  <section class="max-w-6xl mx-auto px-4 mt-8">
+    <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-none" id="categoryButtons">
+      <!-- Dynamic Categories -->
+    </div>
+  </section>
+
+  <!-- Products Grid -->
+  <main class="max-w-6xl mx-auto px-4 py-8 flex-grow">
+    <!-- Loading Spinner -->
+    <div id="loadingState" class="text-center py-16 text-gray-400">
+      <i data-lucide="loader-2" class="w-8 h-8 mx-auto mb-2 animate-spin text-[#f51167]"></i>
+      <p class="text-sm">Loading Lazada deals...</p>
+    </div>
+
+    <!-- Grid -->
+    <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+      <!-- Injected by JS -->
+    </div>
+    
+    <!-- No Results Found -->
+    <div id="noResult" class="hidden text-center py-16 text-gray-400">
+      <i data-lucide="package-search" class="w-12 h-12 mx-auto mb-2 text-gray-300"></i>
+      <p id="noResultText">No products found...</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-500">
+    <div class="max-w-6xl mx-auto px-4">
+      <p class="mb-1">© 2026 LazadaPicks. All rights reserved.</p>
+      <p id="footerDisclaimer" class="text-gray-400">As a Lazada affiliate, we may earn commissions from qualifying purchases at no extra cost to you.</p>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      en: {
+        searchPlaceholder: "Search products...",
+        heroTitle: "Curated Lazada Mega Deals & Discounts",
+        heroSubtitle: "Explore top trending products, guaranteed vouchers, and direct Lazada links.",
+        allCategory: "All",
+        buyButton: "Buy on Lazada",
+        noResult: "No products found matching your search.",
+        footerDisclaimer: "As a Lazada affiliate, we may earn commissions from qualifying purchases at no extra cost to you."
+      },
+      th: {
+        searchPlaceholder: "ค้นหาสินค้า...",
+        heroTitle: "รวมดีลสุดพิเศษและสินค้าขายดีบน Lazada",
+        heroSubtitle: "คัดสรรสินค้าแบรนด์แท้ โปรโมชั่นลดราคาพิเศษ พร้อมลิงก์ตรงจาก Lazada",
+        allCategory: "ทั้งหมด",
+        buyButton: "ซื้อเลยที่ Lazada",
+        noResult: "ไม่พบสินค้าที่ค้นหา...",
+        footerDisclaimer: "เว็บไซต์นี้มีการใช้งานลิงก์ Affiliate ของ Lazada โดยเราอาจได้รับค่าตอบแทนเมื่อมีการสั่งซื้อเกิดขึ้น โดยไม่มีค่าใช้จ่ายเพิ่มเติมสำหรับผู้ซื้อ"
+      }
+    };
+
+    const categoryNamesTh = {
+      'All': 'ทั้งหมด',
+      'Electronics': 'เครื่องใช้ไฟฟ้าและไอที',
+      'Home & Kitchen': 'ของใช้ในบ้านและครัว',
+      'Fashion': 'แฟชั่น',
+      'Beauty': 'ความงามและสุขภาพ'
+    };
+
+    let products = [];
+    let currentLang = 'en';
+    let currentCategory = 'All';
+
+    async function fetchProducts() {
+      try {
+        const response = await fetch('data.json?t=' + Date.now());
+        if (!response.ok) throw new Error('Network error');
+        products = await response.json();
+      } catch (error) {
+        console.error('Failed to load data.json:', error);
+        products = [];
+      } finally {
+        document.getElementById('loadingState').classList.add('hidden');
+        renderCategories();
+        filterProducts();
+      }
+    }
+
+    function renderCategories() {
+      const container = document.getElementById('categoryButtons');
+      container.innerHTML = '';
+
+      const uniqueCategories = ['All', ...new Set(products.map(p => p.category))];
+
+      uniqueCategories.forEach(cat => {
+        const label = currentLang === 'th' ? (categoryNamesTh[cat] || cat) : cat;
+        const isActive = currentCategory === cat;
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        btn.className = isActive 
+          ? "category-btn px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-[#0f146d] text-white shadow-sm transition shrink-0"
+          : "category-btn px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold bg-white text-gray-700 border border-gray-200 hover:bg-gray-100 transition shrink-0";
+        btn.onclick = () => {
+          currentCategory = cat;
+          renderCategories();
+          filterProducts();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function renderProducts(items) {
+      const grid = document.getElementById('productGrid');
+      const noResult = document.getElementById('noResult');
+      grid.innerHTML = '';
+
+      if (items.length === 0) {
+        noResult.classList.remove('hidden');
+        return;
+      }
+      noResult.classList.add('hidden');
+
+      items.forEach(product => {
+        const name = currentLang === 'th' ? (product.nameTh || product.nameEn) : product.nameEn;
+        const category = currentLang === 'th' ? (product.categoryTh || product.category) : product.category;
+        const buyText = translations[currentLang].buyButton;
+
+        const card = `
+          <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition duration-200 overflow-hidden flex flex-col border border-gray-100 group">
+            <div class="relative overflow-hidden aspect-square bg-gray-100">
+              <img src="${product.image}" alt="${name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://placehold.co/400x400?text=Lazada+Item'">
+              <span class="absolute top-2 left-2 bg-[#f51167] text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded shadow-sm">MEGA DEAL</span>
+            </div>
+            <div class="p-3.5 flex flex-col flex-grow justify-between">
+              <div>
+                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold">${category}</span>
+                <h3 class="font-medium text-xs sm:text-sm text-gray-800 line-clamp-2 mt-1">${name}</h3>
+              </div>
+              <div class="mt-3">
+                <div class="flex items-baseline space-x-1.5">
+                  <span class="text-base font-bold text-[#f51167]">${product.price}</span>
+                  ${product.originalPrice ? `<span class="text-xs text-gray-400 line-through">${product.originalPrice}</span>` : ''}
+                </div>
+                <a 
+                  href="${product.affiliateUrl}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="mt-3 w-full bg-gradient-to-r from-[#0f146d] to-[#f51167] hover:opacity-95 text-white py-2 rounded-lg font-semibold text-xs flex items-center justify-center space-x-1 transition shadow-sm"
+                >
+                  <span>${buyText}</span>
+                  <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.innerHTML += card;
+      });
+
+      lucide.createIcons();
+    }
+
+    function filterProducts() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = products.filter(p => {
+        const matchCategory = currentCategory === 'All' || p.category === currentCategory;
+        const nameToSearch = currentLang === 'th' ? (p.nameTh || p.nameEn) : p.nameEn;
+        const matchKeyword = nameToSearch.toLowerCase().includes(keyword);
+        return matchCategory && matchKeyword;
+      });
+      renderProducts(filtered);
+    }
+
+    function switchLanguage(lang) {
+      currentLang = lang;
+      
+      const t = translations[lang];
+      document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+      document.getElementById('heroTitle').innerText = t.heroTitle;
+      document.getElementById('heroSubtitle').innerText = t.heroSubtitle;
+      document.getElementById('noResultText').innerText = t.noResult;
+      document.getElementById('footerDisclaimer').innerText = t.footerDisclaimer;
+
+      const enBtn = document.getElementById('lang-en-btn');
+      const thBtn = document.getElementById('lang-th-btn');
+      if (lang === 'en') {
+        enBtn.className = "px-2.5 py-1 rounded bg-white text-[#f51167] shadow-sm transition";
+        thBtn.className = "px-2.5 py-1 rounded text-gray-600 hover:text-[#f51167] transition";
+      } else {
+        thBtn.className = "px-2.5 py-1 rounded bg-white text-[#f51167] shadow-sm transition";
+        enBtn.className = "px-2.5 py-1 rounded text-gray-600 hover:text-[#f51167] transition";
+      }
+
+      renderCategories();
+      filterProducts();
+    }
+
+    switchLanguage('en');
+    fetchProducts();
+  </script>
+</body>
+</html>
